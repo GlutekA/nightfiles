@@ -1,0 +1,1419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NightFiles — Minecraft Command Log Analyzer</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}html{scrollbar-width:thin;scrollbar-color:#6f63ff #11111a}body{overflow-x:hidden}*::-webkit-scrollbar{width:10px;height:10px}*::-webkit-scrollbar-track{background:#0b0b12;border-radius:999px}*::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#6f63ff,#3f3a82);border:2px solid #0b0b12;border-radius:999px}*::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#9b92ff,#5c54c8)}.tabs{scrollbar-width:thin;scrollbar-color:#5f55d9 #101019;padding-bottom:6px}.tabs::-webkit-scrollbar{height:7px}.tabs::-webkit-scrollbar-track{background:#101019;border-radius:999px;margin:0 22px}.tabs::-webkit-scrollbar-thumb{background:linear-gradient(90deg,#5f55d9,#9b92ff);border-radius:999px;border:0}.tabs::-webkit-scrollbar-thumb:hover{background:linear-gradient(90deg,#8177ff,#b8b0ff)}.top{box-shadow:0 10px 28px rgba(0,0,0,.35)}.search{box-shadow:inset 0 0 0 1px rgba(255,255,255,.015)}.section{box-shadow:0 10px 30px rgba(0,0,0,.16)} body{background:#08080d;color:#eceaf6;font-family:'Segoe UI',system-ui,Arial,sans-serif}.app{min-height:100vh;background:radial-gradient(circle at top left,#17172a 0,#08080d 38%);}.top{position:sticky;top:0;z-index:20;background:rgba(13,13,22,.96);backdrop-filter:blur(10px);border-bottom:1px solid rgba(160,160,255,.14)}.header{display:flex;align-items:center;gap:14px;padding:16px 22px}.dot{width:9px;height:9px;border-radius:50%;background:#8b7dff;box-shadow:0 0 14px #8b7dff}.logo{font-weight:800;font-size:20px;letter-spacing:-.4px}.logo span{color:#a99dff}.subtitle{margin-left:auto;color:#77738d;font-size:12px;text-transform:uppercase;letter-spacing:.9px}.controls{display:grid;grid-template-columns:1.4fr auto auto auto;gap:10px;padding:0 22px 14px}.search{background:#151521;border:1px solid rgba(160,160,255,.15);border-radius:10px;color:#eee;padding:10px 12px;font-size:13px;outline:none}.search:focus{border-color:#8b7dff}.btn,.chip{border:1px solid rgba(160,160,255,.16);background:#151521;color:#aaa6bc;border-radius:10px;padding:9px 12px;font-size:12px;font-weight:700;cursor:pointer}.btn:hover,.chip:hover{border-color:rgba(160,160,255,.34);color:white}.btn.active,.chip.active{background:#272345;color:white;border-color:#8b7dff}.tabs{display:flex;gap:6px;overflow-x:auto;padding:0 22px}.tab{white-space:nowrap;padding:9px 13px;border:1px solid transparent;border-bottom:none;border-radius:9px 9px 0 0;color:#77738d;font-size:12px;font-weight:700;cursor:pointer}.tab:hover{background:#141420;color:#bbb6cf}.tab.active{background:#08080d;color:white;border-color:rgba(160,160,255,.22);position:relative;bottom:-1px}.badge{font-size:10px;color:#888;background:rgba(255,255,255,.07);padding:1px 6px;border-radius:999px;margin-left:5px}.content{padding:20px 22px 40px;max-width:1400px;margin:0 auto}.summary{display:grid;grid-template-columns:repeat(6,minmax(120px,1fr));gap:10px;margin-bottom:16px}.card{background:linear-gradient(180deg,#151521,#101019);border:1px solid rgba(160,160,255,.13);border-radius:14px;padding:13px}.card .v{font-size:24px;font-weight:800}.card .l{font-size:10px;color:#77738d;text-transform:uppercase;letter-spacing:.7px;margin-top:3px}.card.danger{border-color:rgba(248,113,113,.35)}.card.warn{border-color:rgba(251,146,60,.32)}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:13px 0 16px}.small-title{font-size:11px;color:#77738d;text-transform:uppercase;letter-spacing:.8px;margin-right:4px}.type-chip{padding:6px 10px;border-radius:999px;border:1px solid var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);color:var(--c);font-size:11px;font-weight:800;cursor:pointer;opacity:.55}.type-chip.on{opacity:1}.type-chip:hover{opacity:.85}.section{margin-bottom:18px;background:rgba(18,18,28,.55);border:1px solid rgba(160,160,255,.11);border-radius:14px;overflow:hidden}.section-head{display:flex;align-items:center;gap:8px;padding:11px 13px;background:#11111a;border-bottom:1px solid rgba(160,160,255,.1);font-weight:800;color:var(--c)}.section-head .right{margin-left:auto;color:#77738d;font-size:11px}.subhead{padding:8px 13px;color:#8b86a1;font-size:11px;text-transform:uppercase;letter-spacing:.8px;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04)}.row{display:grid;grid-template-columns:120px 120px 1fr auto;gap:10px;align-items:start;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.045);font-size:13px}.row:hover{background:rgba(255,255,255,.035)}.row:last-child{border-bottom:0}.date{color:#7e7a92;font-size:11px;padding-top:2px}.player{color:#aaa6bc;font-size:12px;font-weight:700}.cmd{font-family:Consolas,'SF Mono',monospace;color:#eceaf6;word-break:break-word;font-size:12px;line-height:1.45}.cmd b{color:var(--c)}.tags{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.tag{font-size:10px;font-weight:800;padding:2px 6px;border-radius:999px;background:rgba(255,255,255,.08);color:#aaa}.tag.danger{background:rgba(248,113,113,.18);color:#fca5a5}.tag.warn{background:rgba(251,146,60,.16);color:#fdba74}.tag.info{background:rgba(96,165,250,.15);color:#93c5fd}.empty{padding:35px;text-align:center;color:#77738d}.footer-actions{display:flex;gap:8px;margin-top:12px}.notice{font-size:12px;color:#77738d;margin:0 0 14px}.copy-status{font-size:12px;color:#86efac;margin-left:8px}.danger-text{color:#fca5a5}.warn-text{color:#fdba74}@media(max-width:900px){.controls{grid-template-columns:1fr 1fr}.summary{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:90px 95px 1fr}.tags{grid-column:3}.subtitle{display:none}}@media(max-width:600px){.controls{grid-template-columns:1fr}.summary{grid-template-columns:1fr}.row{grid-template-columns:1fr}.date,.player{padding:0}.tags{grid-column:1;justify-content:flex-start}.content{padding:14px}.header{padding:14px}.tabs{padding:0 14px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="header"><span class="dot"></span><div class="logo">Night<span>Files</span></div><div class="subtitle">minecraft command log analyzer</div></div>
+    <div class="controls">
+      <input id="search" class="search" placeholder="Search: player, command, item, date... e.g. Louixan /give golden_apple" oninput="setSearch(this.value)">
+      <button id="viewGrouped" class="btn active" onclick="setView('grouped')">Grouped</button>
+      <button id="viewChrono" class="btn" onclick="setView('chrono')">Timeline</button>
+      <button class="btn" onclick="copyCurrent()">Copy view</button>
+    </div>
+    <div class="tabs" id="tabs"></div>
+  </div>
+  <main class="content" id="content"></main>
+</div>
+<script>
+const raw = [
+  {
+    "date": "2026-06-09-4",
+    "cmds": [
+      {
+        "type": "/deop",
+        "entries": [
+          "NightShad33_: /deop Louixan"
+        ]
+      },
+      {
+        "type": "/enchant",
+        "entries": [
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant power 5",
+          "NightShad33_: /enchant infinity",
+          "NightShad33_: /enchant protect 4",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant swiftsneak 3",
+          "NightShad33_: /enchant protection 4",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant featherfall 4",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant protection 4",
+          "NightShad33_: /enchant depthstrider 3",
+          "NightShad33_: /enchant protection 4",
+          "NightShad33_: /enchant aquaaffinity",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant respiration 3",
+          "NightShad33_: /enchant fortune 3",
+          "NightShad33_: /enchant knockback 1"
+        ]
+      },
+      {
+        "type": "/gamerule",
+        "entries": [
+          "NightShad33_: /gamerule locator_bar true"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give NightShad33_ invisibility2splashpotion",
+          "NightShad33_: /give NightShad33_ milk_bucket 1",
+          "NightShad33_: /give NightShad33_ flint_and_steel 1",
+          "NightShad33_: /give NightShad33_ netherite_sword 1",
+          "NightShad33_: /give NightShad33_ invis2splashpot 1",
+          "NightShad33_: /give NightShad33_ shield 1",
+          "NightShad33_: /give NightShad33_ enchanted_golden_apple 6",
+          "NightShad33_: /give NightShad33_ bow 1",
+          "NightShad33_: /give NightShad33_ harming_tipped_arrow 64",
+          "NightShad33_: /give NightShad33_ cobweb 64",
+          "NightShad33_: /give NightShad33_ water_bucket 1",
+          "NightShad33_: /give NightShad33_ wind_charge 64",
+          "NightShad33_: /give NightShad33_ experience_bottle 200",
+          "NightShad33_: /give NightShad33_ ender_pearl 80",
+          "NightShad33_: /give NightShad33_ healing_splash_potion 3",
+          "NightShad33_: /give NightShad33_ strength_splash_potion 6",
+          "NightShad33_: /give NightShad33_ swiftness2splashpotion 4",
+          "NightShad33_: /give NightShad33_ invis2splashpot 2",
+          "NightShad33_: /give NightShad33_ diamond_chestplate 1",
+          "NightShad33_: /give NightShad33_ diamond_leggings 1",
+          "NightShad33_: /give NightShad33_ diamond_boots 1",
+          "NightShad33_: /give NightShad33_ diamond_helmet 1",
+          "NightShad33_: /give NightShad33_ invis2splashpot 1",
+          "NightShad33_: /give NightShad33_ strength2splashpot 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 2",
+          "NightShad33_: /give NightShad33_ swift2splashpotion 1",
+          "NightShad33_: /give NightShad33_ smithing_table 1",
+          "NightShad33_: /give NightShad33_ smithing_table 1",
+          "NightShad33_: /give NightShad33_ silence_armor_trim_smithing_template 4",
+          "NightShad33_: /give NightShad33_ netherite_ingot 4",
+          "NightShad33_: /give NightShad33_ flow_armor_trim_smithing_template 1",
+          "NightShad33_: /give NightShad33_ rib_armor_trim_smithing_template 1",
+          "NightShad33_: /give NightShad33_ netherite_ingot 1",
+          "NightShad33_: /give NightShad33_ dune_armor_trim_smithing_template 1",
+          "NightShad33_: /give NightShad33_ ender_pearl 12",
+          "NightShad33_: /give NightShad33_ invis2splashpot 2",
+          "NightShad33_: /give NightShad33_ swiftness2splashpot 1",
+          "NightShad33_: /give NightShad33_ speed2splashpot 1",
+          "NightShad33_: /give NightShad33_ strength2splashpot 1",
+          "NightShad33_: /give NightShad33_ invis2splashpot 1",
+          "NightShad33_: /give NightShad33_ golden_apple 5",
+          "NightShad33_: /give NightShad33_ strength2splashpotion 1",
+          "NightShad33_: /give NightShad33_ speed2splashpot 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give NightShad33_ invis2splashpot 1",
+          "NightShad33_: /give NightShad33_ invisibility2splashpotion 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give NightShad33_ swift2splashpot 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give Louixan sugar_cane 64",
+          "NightShad33_: /give NightShad33_ golden_apple",
+          "NightShad33_: /give NightShad33_ cobweb 1"
+        ]
+      },
+      {
+        "type": "/rankedsmp",
+        "entries": [
+          "NightShad33_: /rankedsmp help"
+        ]
+      },
+      {
+        "type": "/tp",
+        "entries": [
+          "NightShad33_: /tp Mixllers",
+          "NightShad33_: /tp Louixan",
+          "NightShad33_: /tp RokysBalbo",
+          "NightShad33_: /tp Hyo_ran",
+          "NightShad33_: /tp Mixllers",
+          "NightShad33_: /tp Hyo_ran",
+          "NightShad33_: /tp Louixan",
+          "NightShad33_: /tp NightShad33_ 0 0"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-10-2",
+    "cmds": [
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give NightShad33_ totem_of_undying 2",
+          "NightShad33_: /give NightShad33_ cobweb 64",
+          "NightShad33_: /give NightShad33_ cobweb 64",
+          "NightShad33_: /give NightShad33_ golden_apple 64",
+          "NightShad33_: /give NightShad33_ experience_bottle 200",
+          "NightShad33_: /give NightShad33_ golden_apple 24",
+          "NightShad33_: /give NightShad33_ experience_bottle 64",
+          "NightShad33_: /give NightShad33_ ender_pearl 40",
+          "NightShad33_: /give NightShad33_ godapple 6",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 3",
+          "NightShad33_: /give NightShad33_ swiftness2splashpot 3",
+          "NightShad33_: /give NightShad33_ strength2splashpotion 6",
+          "NightShad33_: /give NightShad33_ experience_bottle 64",
+          "NightShad33_: /give NightShad33_ cobweb 64",
+          "NightShad33_: /give NightShad33_ ender_chest 1",
+          "NightShad33_: /give NightShad33_ wind_charge 32",
+          "NightShad33_: /give NightShad33_ golden_carrot 50",
+          "NightShad33_: /give NightShad33_ strength2splashpot 4",
+          "NightShad33_: /give NightShad33_ strength2splashpot 1",
+          "NightShad33_: /give NightShad33_ swiftness2splashpot 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give NightShad33_ water_bucket",
+          "NightShad33_: /give NightShad33_ flint_and_steel 1",
+          "NightShad33_: /give NightShad33_ cobweb 64",
+          "NightShad33_: /give NightShad33_ golden_apple 3",
+          "NightShad33_: /give cobweb 4",
+          "NightShad33_: /give NightShad33_ cobweb 4",
+          "NightShad33_: /give NightShad33_ experience_bottle 3",
+          "NightShad33_: /give NightShad33_ experience_bottle 200",
+          "NightShad33_: /give NightShad33_ golden_apple 32",
+          "NightShad33_: /give NightShad33_ golden_apple 14",
+          "NightShad33_: /give NightShad33_ ender_pearl 64",
+          "NightShad33_: /give DarkSmite07 cobweb 64",
+          "NightShad33_: /give DarkSmite07 golden_apple 64",
+          "NightShad33_: /give DarkSmite07 golden_apple 64",
+          "NightShad33_: /give NightShad33_ strength2splashpotion 3",
+          "NightShad33_: /give NightShad33_ experience_bottle 64",
+          "NightShad33_: /give NightShad33_ swift2splashpotion 3",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 3",
+          "NightShad33_: /give NightShad33_ golden_apple",
+          "NightShad33_: /give NightShad33_ golden_carrot"
+        ]
+      },
+      {
+        "type": "/minecraft:teammsg",
+        "entries": [
+          "Louixan: /minecraft:teammsg E"
+        ]
+      },
+      {
+        "type": "/time",
+        "entries": [
+          "NightShad33_: /time set day"
+        ]
+      },
+      {
+        "type": "/tp",
+        "entries": [
+          "NightShad33_: /tp Glutek_900",
+          "NightShad33_: /tp Glutek_900"
+        ]
+      },
+      {
+        "type": "/weather",
+        "entries": [
+          "NightShad33_: /weather clear"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-10-3",
+    "cmds": [
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give NightShad33_ invis2splashpot 1",
+          "NightShad33_: /give NightShad33_ strength2splashpotion 1",
+          "NightShad33_: /give NightShad33_ swiftness2splashpotion 1",
+          "NightShad33_: /give NightShad33_ inv2splashpotion 1",
+          "NightShad33_: /give NightShad33_ ender_pearl 16",
+          "NightShad33_: /give NightShad33_ strength2splashpot 3",
+          "NightShad33_: /give NightShad33_ swift2splashpotion 1",
+          "NightShad33_: /give NightShad33_ invis2splashpot 1",
+          "NightShad33_: /give NightShad33_ lava_bucket 3",
+          "NightShad33_: /give NightShad33_ strength2splashpot 1",
+          "NightShad33_: /give NightShad33_ speed2splashpot 1",
+          "NightShad33_: /give NightShad33_ invis2splashpot 1",
+          "NightShad33_: /give NightShad33_ golden_apple 4",
+          "NightShad33_: /give NightShad33_ enchanted_golden_apple 2",
+          "NightShad33_: /give NightShad33_ silence_armor_trim_smithing_template 1",
+          "NightShad33_: /give NightShad33_ echest 64",
+          "NightShad33_: /give NightShad33_ golden_apple",
+          "NightShad33_: /give NightShad33_ golden_apple 1000",
+          "NightShad33_: /give NightShad33_ experience_bottle 400",
+          "NightShad33_: /give NightShad33_ totem_of_undying 4"
+        ]
+      },
+      {
+        "type": "/tp",
+        "entries": [
+          "NightShad33_: /tp NightShad33_ 0 0",
+          "NightShad33_: /tp NightShad33_ 100 100",
+          "NightShad33_: /tp DarkSmite07",
+          "NightShad33_: /tp Mixllers",
+          "NightShad33_: /tp Mixllers NightShad33_"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-10-6",
+    "cmds": [
+      {
+        "type": "/deop",
+        "entries": [
+          "NightShad33_: /deop Mixllers",
+          "NightShad33_: /deop NightShad33_"
+        ]
+      },
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode creative"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give @s breeze_rod 1204",
+          "NightShad33_: /give @s breeze_rod 230"
+        ]
+      },
+      {
+        "type": "/op",
+        "entries": [
+          "NightShad33_: /op Mixllers"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-11-10",
+    "cmds": [
+      {
+        "type": "/enchant",
+        "entries": [
+          "NightShad33_: /enchant aquaaffinity",
+          "NightShad33_: /enchant respiration 3",
+          "NightShad33_: /enchant protection 4",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant protection 4",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant protection 4",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant swiftsneak 4",
+          "NightShad33_: /enchant swiftsneak 3",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant sharpness 5",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant sweepingedge 3",
+          "NightShad33_: /enchant fireaspect 2",
+          "NightShad33_: /enchant knockback 1",
+          "NightShad33_: /enchant sharpness 5",
+          "NightShad33_: /enchant fireaspect 2",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant efficiency 5",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant efficiency 5",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant fortune 3",
+          "NightShad33_: /enchant power 5",
+          "NightShad33_: /enchant infinity"
+        ]
+      },
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode spectator",
+          "NightShad33_: /gamemode spectator bloodypackage",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival bloodypackage",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give bloodypackage golden_apple 64",
+          "NightShad33_: /give bloodypackage ender_pearl 16",
+          "NightShad33_: /give bloodypackage golden_apple 64",
+          "NightShad33_: /give bloodypackage item_frame",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 2",
+          "NightShad33_: /give NightShad33_ golden_apple 64",
+          "NightShad33_: /give NightShad33_ golden_apple 64",
+          "NightShad33_: /give NightShad33_ strength2splashpotion 6",
+          "NightShad33_: /give NightShad33_ swiftness2splashpot 3",
+          "NightShad33_: /give NightShad33_ ender_pearl 64",
+          "NightShad33_: /give NightShad33_ cobweb 64",
+          "NightShad33_: /give NightShad33_ wind_charge 64",
+          "NightShad33_: /give NightShad33_ water_bucket 1",
+          "NightShad33_: /give NightShad33_ totem_of_undying 3",
+          "NightShad33_: /give NightShad33_ enchanted_golden_apple 10",
+          "NightShad33_: /give NightShad33_ bow",
+          "NightShad33_: /give NightShad33_ bow 1",
+          "NightShad33_: /give NightShad33_ harming_tipped_arrow 64",
+          "NightShad33_: /give NightShad33_ golden_carrot 64",
+          "NightShad33_: /give NightShad33_ experience_bottle 200",
+          "NightShad33_: /give NightShad33_ healing_splash_potion 3"
+        ]
+      },
+      {
+        "type": "/rankedsmp",
+        "entries": [
+          "NightShad33_: /rankedsmp rank set bloodypackage 1",
+          "NightShad33_: /rankedsmp rank set Hyo_ran 7"
+        ]
+      },
+      {
+        "type": "/time",
+        "entries": [
+          "NightShad33_: /time set day"
+        ]
+      },
+      {
+        "type": "/tp",
+        "entries": [
+          "NightShad33_: /tp Hyo_ran",
+          "NightShad33_: /tp bloodypackage NightShad33_",
+          "NightShad33_: /tp NightShad33_ Hyo_ran",
+          "NightShad33_: /tp Hyo_ran",
+          "NightShad33_: /tp Hyo_ran",
+          "NightShad33_: /tp Hyo_ran",
+          "NightShad33_: /tp Louixan",
+          "NightShad33_: /tp bloodypackage NightShad33_",
+          "NightShad33_: /tp Hyo_ran"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-11-11",
+    "cmds": [
+      {
+        "type": "/time",
+        "entries": [
+          "NightShad33_: /time set day"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-11-12",
+    "cmds": [
+      {
+        "type": "/time",
+        "entries": [
+          "NightShad33_: /time set da",
+          "NightShad33_: /time set day"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-11-13",
+    "cmds": [
+      {
+        "type": "/time",
+        "entries": [
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-11-18",
+    "cmds": [
+      {
+        "type": "/enable2fa",
+        "entries": [
+          "Louixan: /enable2fa"
+        ]
+      },
+      {
+        "type": "/return",
+        "entries": [
+          "Louixan: /return"
+        ]
+      },
+      {
+        "type": "/time",
+        "entries": [
+          "NightShad33_: /time set day"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-11-20",
+    "cmds": [
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give NightShad33_ water_bucket 1"
+        ]
+      },
+      {
+        "type": "/rankedsmp",
+        "entries": [
+          "NightShad33_: /rankedsmp give mace NightShad33_"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-11-21",
+    "cmds": [
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-11-23",
+    "cmds": [
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give Louixan golden_apple 100",
+          "NightShad33_: /give NightShad33_ experience_bottle 1000",
+          "NightShad33_: /give Louixan experience_bottle 1000",
+          "NightShad33_: /give NightShad33_ strength2splashpot 64"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-11-25",
+    "cmds": [
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give NightShad33_ totem_of_undying 1",
+          "NightShad33_: /give NightShad33_ golden_apple 24",
+          "NightShad33_: /give NightShad33_ totem_of_undying 1",
+          "NightShad33_: /give NightShad33_ swiftness2splashpotion 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give NightShad33_ ender_pearl 12"
+        ]
+      },
+      {
+        "type": "/time",
+        "entries": [
+          "NightShad33_: /time set day"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-11-26",
+    "cmds": [
+      {
+        "type": "/deop",
+        "entries": [
+          "NightShad33_: /deop Louixan"
+        ]
+      },
+      {
+        "type": "/gamemode",
+        "entries": [
+          "Louixan: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode survival Louixan",
+          "NightShad33_: /gamemode spectator",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode spectator",
+          "NightShad33_: /gamemode survival"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give NightShad33_ totem_of_undying 4",
+          "NightShad33_: /give NightShad33_ cobweb 64",
+          "NightShad33_: /give NightShad33_ golden_apple 64",
+          "NightShad33_: /give NightShad33_ ender_pearl 16",
+          "NightShad33_: /give NightShad33_ swift2splashpot 2",
+          "NightShad33_: /give NightShad33_ invis2splashpot 2",
+          "NightShad33_: /give NightShad33_ flintandsteel 1",
+          "NightShad33_: /give NightShad33_ tnt 64",
+          "NightShad33_: /give NightShad33_ tnt 64",
+          "NightShad33_: /give NightShad33_ tnt 64",
+          "NightShad33_: /give NightShad33_ tntblock 64",
+          "NightShad33_: /give bloodypackage cobweb",
+          "NightShad33_: /give bloodypackage oak_log",
+          "NightShad33_: /give bloodypackage strength2splashpot 8",
+          "NightShad33_: /give bloodypackage experience_bottle 300",
+          "NightShad33_: /give bloodypackage wind_charge"
+        ]
+      },
+      {
+        "type": "/op",
+        "entries": [
+          "NightShad33_: /op Louixan"
+        ]
+      },
+      {
+        "type": "/time",
+        "entries": [
+          "NightShad33_: /time set day"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-11-4",
+    "cmds": [
+      {
+        "type": "/plugins",
+        "entries": [
+          "NightShad33_: /plugins"
+        ]
+      },
+      {
+        "type": "/rankedsmp",
+        "entries": [
+          "NightShad33_: /rankedsmp rank set NightShad33_ 3"
+        ]
+      },
+      {
+        "type": "/time",
+        "entries": [
+          "NightShad33_: /time set day"
+        ]
+      },
+      {
+        "type": "/tp",
+        "entries": [
+          "NightShad33_: /tp DarkSmite07"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-11-8",
+    "cmds": [
+      {
+        "type": "/time",
+        "entries": [
+          "NightShad33_: /time set day"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-12-2",
+    "cmds": [
+      {
+        "type": "/enchant",
+        "entries": [
+          "NightShad33_: /enchant sharpness 5",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant fireaspect 2",
+          "NightShad33_: /enchant knockback 1",
+          "NightShad33_: /enchant sweepingedge 3",
+          "NightShad33_: /enchant looting 3",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant silktouch",
+          "NightShad33_: /enchant efficiency 5"
+        ]
+      },
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give NightShad33_ golden_carrot 54",
+          "NightShad33_: /give NightShad33_ cobweb 400",
+          "NightShad33_: /give NightShad33_ stick 400",
+          "NightShad33_: /give NightShad33_ stick 1000",
+          "NightShad33_: /give NightShad33_ stick 1000",
+          "NightShad33_: /give NightShad33_ stick 1000",
+          "NightShad33_: /give NightShad33_ stick 1000",
+          "NightShad33_: /give NightShad33_ emerald 64",
+          "NightShad33_: /give NightShad33_ emerald 64",
+          "NightShad33_: /give NightShad33_ emerald 64",
+          "NightShad33_: /give NightShad33_ book 64",
+          "NightShad33_: /give NightShad33_ emerald 64",
+          "NightShad33_: /give NightShad33_ emerald 2",
+          "NightShad33_: /give NightShad33_ emerald 64",
+          "NightShad33_: /give NightShad33_ emerald 64",
+          "NightShad33_: /give NightShad33_ emerald 64",
+          "NightShad33_: /give NightShad33_ emerald 64",
+          "NightShad33_: /give NightShad33_ emerald 64",
+          "NightShad33_: /give NightShad33_ emerald 64",
+          "NightShad33_: /give NightShad33_ cobweb 64",
+          "NightShad33_: /give NightShad33_ ender_pearl 16",
+          "NightShad33_: /give NightShad33_ wind 64",
+          "NightShad33_: /give NightShad33_ wind_charge 64",
+          "NightShad33_: /give NightShad33_ golden_carrot 64",
+          "NightShad33_: /give NightShad33_ water_bucket",
+          "NightShad33_: /give NightShad33_ bed 1",
+          "NightShad33_: /give NightShad33_ tripwire_hook 2",
+          "NightShad33_: /give NightShad33_ string",
+          "NightShad33_: /give NightShad33_ oak_trapdoor",
+          "NightShad33_: /give NightShad33_ redstone 64",
+          "NightShad33_: /give NightShad33_ lever 1",
+          "NightShad33_: /give NightShad33_ diamond_pickaxe 1",
+          "NightShad33_: /give NightShad33_ water_bucket 2",
+          "NightShad33_: /give NightShad33_ pale_oak_trapdoor 1",
+          "NightShad33_: /give NightShad33_ oak_planks 2",
+          "NightShad33_: /give Louixan tripwire_hook 2",
+          "NightShad33_: /give Louixan string 64",
+          "NightShad33_: /give Louixan oak_planks 64",
+          "NightShad33_: /give Andralevji strength2splashpot 6",
+          "NightShad33_: /give Andralevji fire_resistance_splash_potion 6",
+          "NightShad33_: /give Andralevji swiftness2splashpotion 6",
+          "NightShad33_: /give Andralevji golden_apple 100",
+          "NightShad33_: /give Andralevji golden_carrot 160",
+          "NightShad33_: /give Andralevji breeze_rod 150",
+          "NightShad33_: /give Andralevji cobweb 160",
+          "NightShad33_: /give Andralevji experience_bottle 400",
+          "NightShad33_: /give Andralevji strength2pot 6",
+          "NightShad33_: /give Andralevji water_bucket",
+          "NightShad33_: /give NightShad33_ oak_planks 2",
+          "NightShad33_: /give NightShad33_ ender_pearl 64",
+          "NightShad33_: /give NightShad33_ experience_bottle 400",
+          "NightShad33_: /give NightShad33_ golden_apple 300",
+          "NightShad33_: /give NightShad33_ strength2splashpot 1",
+          "NightShad33_: /give NightShad33_ swift2splashpotion 1",
+          "NightShad33_: /give NightShad33_ invis2splashpot 2",
+          "NightShad33_: /give NightShad33_ experience_bottle 64",
+          "NightShad33_: /give NightShad33_ strength2splashpot 1",
+          "NightShad33_: /give NightShad33_ swiftness2splashpot 1",
+          "NightShad33_: /give NightShad33_ netherite_sword",
+          "NightShad33_: /give NightShad33_ flint_and_steel 1",
+          "NightShad33_: /give NightShad33_ shield 1",
+          "NightShad33_: /give NightShad33_ netherite_pickaxe 1",
+          "NightShad33_: /give NightShad33_ golden_apple 64",
+          "NightShad33_: /give NightShad33_ ender_pearl 16",
+          "NightShad33_: /give NightShad33_ invisibility2splashpotion 2",
+          "NightShad33_: /give NightShad33_ swiftness2splashpot 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give NightShad33_ swiftness2splashpot 1"
+        ]
+      },
+      {
+        "type": "/repair",
+        "entries": [
+          "NightShad33_: /repair all"
+        ]
+      },
+      {
+        "type": "/strike",
+        "entries": [
+          "NightShad33_: /strike RokysBalbo"
+        ]
+      },
+      {
+        "type": "/time",
+        "entries": [
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set dy",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day"
+        ]
+      },
+      {
+        "type": "/weather",
+        "entries": [
+          "NightShad33_: /weather clear"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-12-3",
+    "cmds": [
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode spectator",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode spectator",
+          "NightShad33_: /gamemode survival"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give NightShad33_ wind_charge 32",
+          "NightShad33_: /give NightShad33_ enchanted_golden_apple 3",
+          "NightShad33_: /give NightShad33_ ender_pearl 16",
+          "NightShad33_: /give NightShad33_ swift2splashpotion",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 2",
+          "NightShad33_: /give NightShad33_ stone 64",
+          "NightShad33_: /give NightShad33_ stone 64",
+          "NightShad33_: /give NightShad33_ obsidian 64",
+          "NightShad33_: /give NightShad33_ invis2potion 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give DarkSmite07 golden_apple 100",
+          "NightShad33_: /give NightShad33_ oak_fence 3",
+          "NightShad33_: /give NightShad33_ polished_deepslate 32",
+          "NightShad33_: /give NightShad33_ polished_deepslate 32",
+          "NightShad33_: /give NightShad33_ torch 5"
+        ]
+      },
+      {
+        "type": "/repair",
+        "entries": [
+          "NightShad33_: /repair all"
+        ]
+      },
+      {
+        "type": "/time",
+        "entries": [
+          "NightShad33_: /time set ay",
+          "NightShad33_: /time set day"
+        ]
+      },
+      {
+        "type": "/tp",
+        "entries": [
+          "NightShad33_: /tp DarkSmite07 NightShad33_",
+          "NightShad33_: /tp DarkSmite07 NightShad33_"
+        ]
+      },
+      {
+        "type": "/weather",
+        "entries": [
+          "NightShad33_: /weather clear"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-12-4",
+    "cmds": [
+      {
+        "type": "/clear",
+        "entries": [
+          "NightShad33_: /clear DarkSmite07 trident"
+        ]
+      },
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode spectator",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode spectator",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode spectator",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode spectator",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give NightShad33_ chest 2",
+          "NightShad33_: /give DarkSmite07 trident",
+          "NightShad33_: /give DarkSmite07 trident 1",
+          "NightShad33_: /give DarkSmite07 totem_of_undying 1",
+          "NightShad33_: /give NightShad33_ tnt",
+          "NightShad33_: /give NightShad33_ flint_and_steel 1",
+          "NightShad33_: /give DarkSmite07 dispenser 64",
+          "NightShad33_: /give DarkSmite07 redstone_torch 64",
+          "NightShad33_: /give DarkSmite07 redstone 64",
+          "NightShad33_: /give DarkSmite07 soul_sand 64",
+          "NightShad33_: /give DarkSmite07 water_bucket 1",
+          "NightShad33_: /give DarkSmite07 deepslate 400",
+          "NightShad33_: /give NightShad33_ experience_bottle 400",
+          "NightShad33_: /give NightShad33_ ender_pearl 30",
+          "NightShad33_: /give NightShad33_ golden_apple 64",
+          "NightShad33_: /give NightShad33_ ender_pearl 16",
+          "NightShad33_: /give NightShad33_ enchanted_golden_apple 6",
+          "NightShad33_: /give NightShad33_ swift2splashpot 2",
+          "NightShad33_: /give NightShad33_ invis2splashpot 2",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give NightShad33_ wind_charge 64",
+          "NightShad33_: /give DarkSmite07 magma 64",
+          "NightShad33_: /give DarkSmite07 magma_block 64",
+          "NightShad33_: /give NightShad33_ magma_block 64",
+          "NightShad33_: /give DarkSmite07 wolf_spawn_egg 40",
+          "NightShad33_: /give NightShad33_ wolf_spawn_egg 64",
+          "NightShad33_: /give NightShad33_ bone 64",
+          "NightShad33_: /give NightShad33_ wolf_armor 64",
+          "NightShad33_: /give NightShad33_ fire_resistance_splash_potion 1",
+          "NightShad33_: /give NightShad33_ strength2splashpotion 1",
+          "NightShad33_: /give NightShad33_ swift2splashpot 1",
+          "NightShad33_: /give NightShad33_ invis2splashpot 1",
+          "NightShad33_: /give NightShad33_ experience_bottle 64",
+          "NightShad33_: /give NightShad33_ ender_pearl 16",
+          "NightShad33_: /give NightShad33_ experience_bottle 64",
+          "NightShad33_: /give NightShad33_ golden_apple 32",
+          "NightShad33_: /give NightShad33_ ender_pearl 15",
+          "NightShad33_: /give NightShad33_ golden_apple 40",
+          "NightShad33_: /give NightShad33_ ender_pearl 16",
+          "NightShad33_: /give NightShad33_ swiftness2splashpot 2",
+          "NightShad33_: /give NightShad33_ invis2splashpot 2",
+          "NightShad33_: /give NightShad33_ ender_pearl 12",
+          "NightShad33_: /give NightShad33_ water_bucket 1",
+          "NightShad33_: /give NightShad33_ cobweb 500",
+          "NightShad33_: /give NightShad33_ enchanted_golden_apple 10",
+          "NightShad33_: /give NightShad33_ polished_deepslate 1",
+          "NightShad33_: /give NightShad33_ ender_chest 1",
+          "NightShad33_: /give Louixan wheat 20",
+          "NightShad33_: /give Louixan sheers",
+          "NightShad33_: /give NightShad33_ golden_carrot",
+          "NightShad33_: /give NightShad33_ dirt 20",
+          "NightShad33_: /give NightShad33_ cat_spawn_egg 2",
+          "NightShad33_: /give NightShad33_ emerald 700",
+          "NightShad33_: /give NightShad33_ emerald 700",
+          "NightShad33_: /give Louixan books 70",
+          "NightShad33_: /give NightShad33_ emerald 700",
+          "NightShad33_: /give NightShad33_ emerad 700",
+          "NightShad33_: /give NightShad33_ emerald 700",
+          "NightShad33_: /give NightShad33_ emerald 700",
+          "NightShad33_: /give NightShad33_ emerald 700",
+          "NightShad33_: /give NightShad33_ emerald 700",
+          "NightShad33_: /give NightShad33_ emerald 64",
+          "NightShad33_: /give NightShad33_ emerald 700",
+          "NightShad33_: /give NightShad33_ beetroot 700"
+        ]
+      },
+      {
+        "type": "/repair",
+        "entries": [
+          "NightShad33_: /repair",
+          "NightShad33_: /repair all",
+          "NightShad33_: /repair all",
+          "NightShad33_: /repair all",
+          "NightShad33_: /repair all",
+          "NightShad33_: /repair all",
+          "NightShad33_: /repair all",
+          "NightShad33_: /repair all",
+          "NightShad33_: /repair all",
+          "NightShad33_: /repair all"
+        ]
+      },
+      {
+        "type": "/time",
+        "entries": [
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day"
+        ]
+      },
+      {
+        "type": "/tp",
+        "entries": [
+          "NightShad33_: /tp DarkSmite07 NightShad33_",
+          "NightShad33_: /tp DarkSmite07 NightShad33_",
+          "NightShad33_: /tp Louixan NightShad33_"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-13-3",
+    "cmds": [
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give NightShad33_ bookshelf 5",
+          "NightShad33_: /give NightShad33_ enchanting_table 1",
+          "NightShad33_: /give NightShad33_ obsidian 64"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-14-2",
+    "cmds": [
+      {
+        "type": "/enchant",
+        "entries": [
+          "NightShad33_: /enchant aquaaffinity 1",
+          "NightShad33_: /enchant riptide 3",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant unbreaking 3"
+        ]
+      },
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode spectator",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode spectator",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give NightShad33_ anvil 1",
+          "NightShad33_: /give NightShad33_ swiftness2splashpot 2",
+          "NightShad33_: /give NightShad33_ golden_apple 64",
+          "NightShad33_: /give NightShad33_ golden_apple 64",
+          "NightShad33_: /give Hyo_ran stone 6",
+          "NightShad33_: /give NightShad33_ stone",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give NightShad33_ invis2splashpot 2",
+          "NightShad33_: /give NightShad33_ invis2splashpot 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give Hyo_ran fire_resistance_splash_potion 3",
+          "NightShad33_: /give Hyo_ran gunpowder 4",
+          "NightShad33_: /give NightShad33_ water_bucket 1",
+          "NightShad33_: /give NightShad33_ swift2splashpotion 1",
+          "NightShad33_: /give bloodypackage golden_apple",
+          "NightShad33_: /give NightShad33_ dirt 5",
+          "NightShad33_: /give NightShad33_ trident 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give NightShad33_ swift2splashpot 1",
+          "NightShad33_: /give NightShad33_ smithing_table 1",
+          "NightShad33_: /give NightShad33_ coast_armor_trim_smithing_template 4",
+          "NightShad33_: /give Hyo_ran invis2splashpot 5",
+          "NightShad33_: /give NightShad33_ swift2splashpot 1",
+          "NightShad33_: /give NightShad33_ invis2splashpot 1",
+          "NightShad33_: /give Hyo_ran netherite_sword 1",
+          "NightShad33_: /give NightShad33_ smithing_table 1",
+          "NightShad33_: /give NightShad33_ coast_armor_trim_smithing_template 4",
+          "NightShad33_: /give NightShad33_ soul_sand 64",
+          "NightShad33_: /give NightShad33_ wither_skeleton_skull 64",
+          "NightShad33_: /give NightShad33_ swift2splashpotion 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give NightShad33_ dirt 6",
+          "NightShad33_: /give Hyo_ran golden_apple 64",
+          "NightShad33_: /give NightShad33_ ender_pearl 15",
+          "NightShad33_: /give NightShad33_ experience_bottle 500",
+          "NightShad33_: /give NightShad33_ invis2splashpot 2",
+          "NightShad33_: /give NightShad33_ swift2splashpot 2",
+          "NightShad33_: /give NightShad33_ golden_aapple 15",
+          "NightShad33_: /give NightShad33_ golden_apple 64",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1"
+        ]
+      },
+      {
+        "type": "/repair",
+        "entries": [
+          "NightShad33_: /repair all"
+        ]
+      },
+      {
+        "type": "/time",
+        "entries": [
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set day",
+          "NightShad33_: /time set se tday",
+          "NightShad33_: /time set day"
+        ]
+      },
+      {
+        "type": "/weather",
+        "entries": [
+          "NightShad33_: /weather storm",
+          "NightShad33_: /weather storm"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-15-5",
+    "cmds": [
+      {
+        "type": "/tp",
+        "entries": [
+          "NightShad33_: /tp ItzMrAstro"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-15-9",
+    "cmds": [
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give Hyo_ran tnt_minecart 5"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-16-3",
+    "cmds": [
+      {
+        "type": "/clear",
+        "entries": [
+          "NightShad33_: /clear",
+          "NightShad33_: /clear RokysBalbo",
+          "NightShad33_: /clear RokysBalbo"
+        ]
+      },
+      {
+        "type": "/enchant",
+        "entries": [
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant sharpness 5",
+          "NightShad33_: /enchant knockback 1",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant sweepingedge 3",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant fireaspect 2",
+          "NightShad33_: /enchant efficiency 5",
+          "NightShad33_: /enchant silktouch",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant sharpness 5",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant power 5",
+          "NightShad33_: /enchant unbreaking 3",
+          "NightShad33_: /enchant mending"
+        ]
+      },
+      {
+        "type": "/fly",
+        "entries": [
+          "NightShad33_: /fly"
+        ]
+      },
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give NightShad33_ golden_apple 64",
+          "NightShad33_: /give DarkSmite07 strength2splashpotion 5",
+          "NightShad33_: /give DarkSmite07 ender_pearl 30",
+          "NightShad33_: /give NightShad33_ ender_chest 1",
+          "NightShad33_: /give Hyo_ran cobweb 64",
+          "NightShad33_: /give Hyo_ran experience_bottle 300",
+          "NightShad33_: /give Hyo_ran netherite_axe 1",
+          "NightShad33_: /give Hyo_ran shield 1",
+          "NightShad33_: /give Hyo_ran totem_of_undying 1",
+          "NightShad33_: /give DarkSmite07 strength2splashpot",
+          "NightShad33_: /give Hyo_ran golden_apple 64",
+          "NightShad33_: /give Hyo_ran strength2splashpotion 10",
+          "NightShad33_: /give Hyo_ran swiftness2splashpotion 10",
+          "NightShad33_: /give Hyo_ran fire_resistance_splash_potion 3",
+          "NightShad33_: /give Eklipsc golden_apple 64",
+          "NightShad33_: /give NightShad33_ strength2splashpot 1",
+          "NightShad33_: /give NightShad33_ swiftness2splashpot 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give NightShad33_ water_bucket 1",
+          "NightShad33_: /give NightShad33_ carved_pumpkin 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give NightShad33_ enchanted_golden_apple 15",
+          "NightShad33_: /give NightShad33_ bow 1",
+          "NightShad33_: /give NightShad33_ harming_tipped_arrow 64",
+          "NightShad33_: /give NightShad33_ totem 3",
+          "NightShad33_: /give NightShad33_ ender_chest 1",
+          "NightShad33_: /give NightShad33_ netherite_spear 1",
+          "NightShad33_: /give NightShad33_ wind_charge 64",
+          "NightShad33_: /give NightShad33_ shield 1",
+          "NightShad33_: /give NightShad33_ ender_pearl 64",
+          "NightShad33_: /give NightShad33_ water_bucket 1",
+          "NightShad33_: /give NightShad33_ golden_carrot 64",
+          "NightShad33_: /give NightShad33_ strength2splashpot 6",
+          "NightShad33_: /give NightShad33_ swift2splashpot 3",
+          "NightShad33_: /give NightShad33_ inv2splashpotion 3",
+          "NightShad33_: /give NightShad33_ healing_splash_potion 3",
+          "NightShad33_: /give NightShad33_ swift2splashpot 1",
+          "NightShad33_: /give NightShad33_ inv2splashpotion 1",
+          "NightShad33_: /give NightShad33_ strength2splashpot 1",
+          "NightShad33_: /give NightShad33_ inv2splashpotion 1",
+          "NightShad33_: /give NightShad33_ swift2splashpot 1",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give ItzMrAstro",
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1"
+        ]
+      },
+      {
+        "type": "/rankedsmp",
+        "entries": [
+          "NightShad33_: /rankedsmp give mace bloodypackage"
+        ]
+      },
+      {
+        "type": "/repair",
+        "entries": [
+          "NightShad33_: /repair all"
+        ]
+      },
+      {
+        "type": "/tp",
+        "entries": [
+          "NightShad33_: /tp DarkSmite07 NightShad33_",
+          "NightShad33_: /tp Hyo_ran NightShad33_"
+        ]
+      },
+      {
+        "type": "/weather",
+        "entries": [
+          "NightShad33_: /weather rain",
+          "NightShad33_: /weather storm"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-06-16-4",
+    "cmds": [
+      {
+        "type": "/deop",
+        "entries": [
+          "NightShad33_: /deop Glutek_900",
+          "NightShad33_: /deop Glutek_900",
+          "NightShad33_: /deop Glutek_900"
+        ]
+      },
+      {
+        "type": "/fly",
+        "entries": [
+          "NightShad33_: /fly"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give NightShad33_ invis2splashpotion 1",
+          "NightShad33_: /give NightShad33_ golden_apple 5",
+          "NightShad33_: /give NightShad33_ ender_pearl 16"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "latest",
+    "cmds": [
+      {
+        "type": "/deop",
+        "entries": [
+          "NightShad33_: /deop Glutek_900"
+        ]
+      },
+      {
+        "type": "/enchant",
+        "entries": [
+          "NightShad33_: /enchant mending",
+          "NightShad33_: /enchant unbreaking 3"
+        ]
+      },
+      {
+        "type": "/ex",
+        "entries": [
+          "NightShad33_: /ex"
+        ]
+      },
+      {
+        "type": "/gamemode",
+        "entries": [
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival",
+          "NightShad33_: /gamemode creative",
+          "NightShad33_: /gamemode survival"
+        ]
+      },
+      {
+        "type": "/give",
+        "entries": [
+          "NightShad33_: /give NightShad33_ water_bucket 1",
+          "NightShad33_: /give NightShad33_ elytra 1",
+          "NightShad33_: /give NightShad33_ firework_rocket 200",
+          "NightShad33_: /give NightShad33_ invis2splashpot 10"
+        ]
+      }
+    ]
+  }
+];
+
+const IGNORED = new Set(['changepass','msg','minecraft:msg','tell','minecraft:tell','w','minecraft:w','whisper','minecraft:whisper','reply','r','einv','evin','extrainventory','tpa','tpaccept','tpadeny','tpdeny','tpahere','tphere','tpacancel','login','register']);
+const SUSPICIOUS = new Set(['give','gamemode','op','deop','enchant','repair','fly','clear','strike','rankedsmp','plugins']);
+const HIGH = new Set(['op','deop','changepass','clear','strike']);
+const MID = new Set(['give','gamemode','repair','fly','rankedsmp','enchant']);
+const COLOR = {op:'#34d399',deop:'#f87171',give:'#4ade80',gamemode:'#fb923c',tp:'#60a5fa',enchant:'#a78bfa',repair:'#e879f9',fly:'#67e8f9',clear:'#f472b6',strike:'#fca5a5',rankedsmp:'#c084fc',time:'#fbbf24',weather:'#38bdf8',plugins:'#94a3b8','minecraft:teammsg':'#6ee7b7',other:'#94a3b8'};
+let activeTab='__ALL__';
+let viewMode='grouped';
+let query='';
+let activePlayers=new Set(['NightShad33_','Louixan']);
+let activeTypes=new Set();
+
+function typeClean(t){return (t||'').replace(/^\//,'').toLowerCase()}
+function typeFromCmd(cmd){return typeClean((cmd.trim().split(/\s+/)[0]||''))}
+function getColor(type){return COLOR[typeClean(type)] || COLOR.other}
+function esc(s){return String(s).replace(/[&<>'"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]))}
+function splitEntry(e){const i=e.indexOf(': ');return i>=0?{player:e.slice(0,i),cmd:e.slice(i+2)}:{player:'?',cmd:e}}
+function amountFromCmd(cmd){const m=cmd.match(/\s(\d+)\s*$/);return m?Number(m[1]):null}
+function normalizeData(){return raw.map(d=>({date:d.date,cmds:d.cmds.map(c=>{const entries=c.entries.filter(e=>{const {cmd}=splitEntry(e);const t=typeFromCmd(cmd)||typeClean(c.type);return !IGNORED.has(t)});return {type:'/'+typeClean(c.type),entries}}).filter(c=>c.entries.length)})).filter(d=>d.cmds.length)}
+const data=normalizeData();
+function flatten(){const out=[];data.forEach(d=>d.cmds.forEach(c=>c.entries.forEach(e=>{const p=splitEntry(e);const typ=typeFromCmd(p.cmd)||typeClean(c.type);out.push({date:d.date,type:typ,player:p.player,cmd:p.cmd})})));return out}
+const allRows=flatten();
+const allTypes=[...new Set(allRows.map(r=>r.type))].sort();
+activeTypes=new Set(allTypes);
+
+function filteredRows(){let rows=allRows.slice();if(activeTab==='__SUSPICIOUS__')rows=rows.filter(r=>SUSPICIOUS.has(r.type));else if(activeTab!=='__ALL__')rows=rows.filter(r=>r.date===activeTab);rows=rows.filter(r=>activePlayers.has(r.player));rows=rows.filter(r=>activeTypes.has(r.type));const q=query.trim().toLowerCase();if(q)rows=rows.filter(r=>(r.date+' '+r.player+' /'+r.type+' '+r.cmd).toLowerCase().includes(q));return rows}
+function countsForDate(date){return allRows.filter(r=>r.date===date).length}
+function renderTabs(){const el=document.getElementById('tabs');let html=`<div class="tab ${activeTab==='__ALL__'?'active':''}" onclick="switchTab('__ALL__')">All <span class="badge">${allRows.length}</span></div>`;const susp=allRows.filter(r=>SUSPICIOUS.has(r.type)).length;html+=`<div class="tab ${activeTab==='__SUSPICIOUS__'?'active':''}" onclick="switchTab('__SUSPICIOUS__')">Suspicious <span class="badge">${susp}</span></div>`;data.forEach(d=>{html+=`<div class="tab ${activeTab===d.date?'active':''}" onclick="switchTab('${esc(d.date)}')">${esc(d.date)} <span class="badge">${countsForDate(d.date)}</span></div>`});el.innerHTML=html}
+function summary(rows){const by=t=>rows.filter(r=>r.type===t).length;const opdeop=by('op')+by('deop');const susp=rows.filter(r=>SUSPICIOUS.has(r.type)).length;return `<div class="summary"><div class="card"><div class="v">${rows.length}</div><div class="l">all commands</div></div><div class="card danger"><div class="v">${susp}</div><div class="l">suspicious</div></div><div class="card warn"><div class="v">${by('give')}</div><div class="l">/give</div></div><div class="card warn"><div class="v">${by('gamemode')}</div><div class="l">/gamemode</div></div><div class="card"><div class="v">${by('tp')}</div><div class="l">/tp</div></div><div class="card danger"><div class="v">${opdeop}</div><div class="l">/op + /deop</div></div></div>`}
+function filters(){let html='<div class="bar"><span class="small-title">Player:</span>';['NightShad33_','Louixan'].forEach(p=>html+=`<button class="chip ${activePlayers.has(p)?'active':''}" onclick="togglePlayer('${p}')">${p}</button>`);html+='</div><div class="bar"><span class="small-title">Type:</span>';allTypes.forEach(t=>{const col=getColor(t);const on=activeTypes.has(t);const cnt=filteredRows().filter(r=>r.type===t).length;html+=`<span class="type-chip ${on?'on':''}" style="--c:${col}" onclick="toggleType('${esc(t)}')">/${esc(t)} <span class="badge">${cnt}</span></span>`});html+='</div>';return html}
+function commandBadges(r){const tags=[];const n=amountFromCmd(r.cmd);if(HIGH.has(r.type))tags.push(['danger','critical']);else if(MID.has(r.type))tags.push(['warn','review']);if(r.type==='give'&&n!==null){if(n>=500)tags.push(['danger','large amount']);else if(n>=64)tags.push(['warn','x'+n])}if(r.type==='gamemode'&&/\b(creative|spectator)\b/i.test(r.cmd))tags.push(['warn','mode']);if(r.type==='op'||r.type==='deop')tags.push(['danger','permissions']);if(r.type==='repair'&&/all/i.test(r.cmd))tags.push(['warn','repair all']);if(r.type==='tp')tags.push(['info','teleport']);return tags.map(([c,t])=>`<span class="tag ${c}">${esc(t)}</span>`).join('')}
+function rowHtml(r, showDate=true){const col=getColor(r.type);const parts=r.cmd.split(/\s+/);const first=parts.shift()||('/'+r.type);return `<div class="row" style="--c:${col}">${showDate?`<div class="date">${esc(r.date)}</div>`:'<div class="date"></div>'}<div class="player">${esc(r.player)}</div><div class="cmd"><b>${esc(first)}</b>${parts.length?' '+esc(parts.join(' ')):''}</div><div class="tags">${commandBadges(r)}</div></div>`}
+function renderGrouped(rows){if(!rows.length)return '<div class="empty">No results for these filters.</div>';let html='';const byType={};rows.forEach(r=>(byType[r.type]??=[]).push(r));Object.keys(byType).sort((a,b)=>byType[b].length-byType[a].length||a.localeCompare(b)).forEach(t=>{const col=getColor(t);html+=`<section class="section"><div class="section-head" style="--c:${col}">/${esc(t)} <span class="badge">${byType[t].length}</span><span class="right">grouped by date</span></div>`;const byDate={};byType[t].forEach(r=>(byDate[r.date]??=[]).push(r));Object.keys(byDate).sort().forEach(d=>{html+=`<div class="subhead">${esc(d)} — ${byDate[d].length} entries</div>`;byDate[d].forEach(r=>html+=rowHtml(r,false))});html+='</section>'});return html}
+function renderChrono(rows){if(!rows.length)return '<div class="empty">No results for these filters.</div>';let html='<section class="section"><div class="section-head" style="--c:#a99dff">Timeline entries <span class="badge">'+rows.length+'</span><span class="right">date shown next to every command</span></div>';rows.forEach(r=>html+=rowHtml(r,true));html+='</section>';return html}
+function renderContent(){const rows=filteredRows();let title=activeTab==='__ALL__'?'All commands':activeTab==='__SUSPICIOUS__'?'Suspicious commands':'Date / file: '+activeTab;let html=`<div class="notice"><b>${esc(title)}</b> · view: ${viewMode==='grouped'?'grouped':'timeline'} <span id="copyStatus" class="copy-status"></span></div>`;html+=summary(rows);html+=filters();html+='<div class="footer-actions"><button class="btn" onclick="selectSuspiciousOnly()">Show suspicious types only</button><button class="btn" onclick="resetFilters()">Reset filters</button><button class="btn" onclick="copySuspicious()">Copy suspicious</button></div><br>';html+=viewMode==='grouped'?renderGrouped(rows):renderChrono(rows);document.getElementById('content').innerHTML=html;document.getElementById('viewGrouped').classList.toggle('active',viewMode==='grouped');document.getElementById('viewChrono').classList.toggle('active',viewMode==='chrono')}
+function switchTab(t){activeTab=t;renderTabs();renderContent()}function setView(v){viewMode=v;renderContent()}function setSearch(v){query=v;renderContent()}function togglePlayer(p){activePlayers.has(p)?activePlayers.delete(p):activePlayers.add(p);renderContent()}function toggleType(t){activeTypes.has(t)?activeTypes.delete(t):activeTypes.add(t);renderContent()}function selectSuspiciousOnly(){activeTypes=new Set(allTypes.filter(t=>SUSPICIOUS.has(t)));renderContent()}function resetFilters(){activeTypes=new Set(allTypes);activePlayers=new Set(['NightShad33_','Louixan']);query='';document.getElementById('search').value='';renderContent()}
+function rowsToText(rows){return rows.map(r=>`${r.date} | ${r.player} | /${r.type} | ${r.cmd}`).join('\n')}
+function copyText(txt){if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>showCopied())}else{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showCopied()}}
+function showCopied(){const el=document.getElementById('copyStatus');if(el){el.textContent='Copied';setTimeout(()=>el.textContent='',1600)}}
+function copyCurrent(){copyText(rowsToText(filteredRows()))}function copySuspicious(){copyText(rowsToText(filteredRows().filter(r=>SUSPICIOUS.has(r.type))))}
+renderTabs();renderContent();
+</script>
+</body>
+</html>
