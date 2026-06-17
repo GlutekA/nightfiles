@@ -462,12 +462,6 @@ const raw = [
     "date": "2026-06-11-18",
     "cmds": [
       {
-        "type": "/enable2fa",
-        "entries": [
-          "Louixan: /enable2fa"
-        ]
-      },
-      {
         "type": "/return",
         "entries": [
           "Louixan: /return"
@@ -1374,9 +1368,9 @@ const raw = [
   }
 ];
 
-const IGNORED = new Set(['changepass','msg','minecraft:msg','tell','minecraft:tell','w','minecraft:w','whisper','minecraft:whisper','reply','r','einv','evin','extrainventory','tpa','tpaccept','tpadeny','tpdeny','tpahere','tphere','tpacancel','login','register']);
+const IGNORED = new Set(['msg','minecraft:msg','tell','minecraft:tell','w','minecraft:w','whisper','minecraft:whisper','reply','r','einv','evin','extrainventory','tpa','tpaccept','tpadeny','tpdeny','tpahere','tphere','tpacancel']);
 const SUSPICIOUS = new Set(['give','gamemode','op','deop','enchant','repair','fly','clear','strike','rankedsmp','plugins']);
-const HIGH = new Set(['op','deop','changepass','clear','strike']);
+const HIGH = new Set(['op','deop','clear','strike']);
 const MID = new Set(['give','gamemode','repair','fly','rankedsmp','enchant']);
 const COLOR = {op:'#34d399',deop:'#f87171',give:'#4ade80',gamemode:'#fb923c',tp:'#60a5fa',enchant:'#a78bfa',repair:'#e879f9',fly:'#67e8f9',clear:'#f472b6',strike:'#fca5a5',rankedsmp:'#c084fc',time:'#fbbf24',weather:'#38bdf8',plugins:'#94a3b8','minecraft:teammsg':'#6ee7b7',other:'#94a3b8'};
 let activeTab='__ALL__';
@@ -1407,7 +1401,7 @@ function commandBadges(r){const tags=[];const n=amountFromCmd(r.cmd);if(HIGH.has
 function rowHtml(r, showDate=true){const col=getColor(r.type);const parts=r.cmd.split(/\s+/);const first=parts.shift()||('/'+r.type);return `<div class="row" style="--c:${col}">${showDate?`<div class="date">${esc(r.date)}</div>`:'<div class="date"></div>'}<div class="player">${esc(r.player)}</div><div class="cmd"><b>${esc(first)}</b>${parts.length?' '+esc(parts.join(' ')):''}</div><div class="tags">${commandBadges(r)}</div></div>`}
 function renderGrouped(rows){if(!rows.length)return '<div class="empty">No results for these filters.</div>';let html='';const byType={};rows.forEach(r=>(byType[r.type]??=[]).push(r));Object.keys(byType).sort((a,b)=>byType[b].length-byType[a].length||a.localeCompare(b)).forEach(t=>{const col=getColor(t);html+=`<section class="section"><div class="section-head" style="--c:${col}">/${esc(t)} <span class="badge">${byType[t].length}</span><span class="right">grouped by date</span></div>`;const byDate={};byType[t].forEach(r=>(byDate[r.date]??=[]).push(r));Object.keys(byDate).sort().forEach(d=>{html+=`<div class="subhead">${esc(d)} — ${byDate[d].length} entries</div>`;byDate[d].forEach(r=>html+=rowHtml(r,false))});html+='</section>'});return html}
 function renderChrono(rows){if(!rows.length)return '<div class="empty">No results for these filters.</div>';let html='<section class="section"><div class="section-head" style="--c:#a99dff">Timeline entries <span class="badge">'+rows.length+'</span><span class="right">date shown next to every command</span></div>';rows.forEach(r=>html+=rowHtml(r,true));html+='</section>';return html}
-function renderContent(){const rows=filteredRows();let title=activeTab==='__ALL__'?'All commands':activeTab==='__SUSPICIOUS__'?'Suspicious commands':'Date / file: '+activeTab;let html=`<div class="notice"><b>${esc(title)}</b> · view: ${viewMode==='grouped'?'grouped':'timeline'} <span id="copyStatus" class="copy-status"></span></div>`;html+=summary(rows);html+=filters();html+='<div class="footer-actions"><button class="btn" onclick="selectSuspiciousOnly()">Show suspicious types only</button><button class="btn" onclick="resetFilters()">Reset filters</button><button class="btn" onclick="copySuspicious()">Copy suspicious</button></div><br>';html+=viewMode==='grouped'?renderGrouped(rows):renderChrono(rows);document.getElementById('content').innerHTML=html;document.getElementById('viewGrouped').classList.toggle('active',viewMode==='grouped');document.getElementById('viewChrono').classList.toggle('active',viewMode==='chrono')}
+function renderContent(){const rows=filteredRows();let title=activeTab==='__ALL__'?'All commands':activeTab==='__SUSPICIOUS__'?'Suspicious commands':'Date / file: '+activeTab;let html=`<div class="notice"><b>${esc(title)}</b> · view: ${viewMode==='grouped'?'grouped':'timeline'} <span id="copyStatus" class="copy-status"></span></div>`;html+=summary(rows);html+=filters();html+='<div class="footer-actions"><button class="btn" onclick="selectSuspiciousOnly()">Pokaż tylko suspicious typy</button><button class="btn" onclick="resetFilters()">Reset filters</button><button class="btn" onclick="copySuspicious()">Kopiuj suspicious</button></div><br>';html+=viewMode==='grouped'?renderGrouped(rows):renderChrono(rows);document.getElementById('content').innerHTML=html;document.getElementById('viewGrouped').classList.toggle('active',viewMode==='grouped');document.getElementById('viewChrono').classList.toggle('active',viewMode==='chrono')}
 function switchTab(t){activeTab=t;renderTabs();renderContent()}function setView(v){viewMode=v;renderContent()}function setSearch(v){query=v;renderContent()}function togglePlayer(p){activePlayers.has(p)?activePlayers.delete(p):activePlayers.add(p);renderContent()}function toggleType(t){activeTypes.has(t)?activeTypes.delete(t):activeTypes.add(t);renderContent()}function selectSuspiciousOnly(){activeTypes=new Set(allTypes.filter(t=>SUSPICIOUS.has(t)));renderContent()}function resetFilters(){activeTypes=new Set(allTypes);activePlayers=new Set(['NightShad33_','Louixan']);query='';document.getElementById('search').value='';renderContent()}
 function rowsToText(rows){return rows.map(r=>`${r.date} | ${r.player} | /${r.type} | ${r.cmd}`).join('\n')}
 function copyText(txt){if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>showCopied())}else{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showCopied()}}
